@@ -1,8 +1,11 @@
 <script setup>
 import {ref} from 'vue';
-const visible = ref(false);
+
+const props = defineProps(['visibility']);
+
+const show = 'visible';
 </script>
 
 <template>
-    <div class="eye"></div>
+    <div :class="visibility"></div>
 </template>

@@ -22,13 +22,17 @@ a:hover {
   color: #535bf2;
 }
 
-.eye {
+.invisible {
+  color: #202020;
+}
+
+.visible {
+  color: #c08020;
   border: 1em solid;
   border-radius: 1em;
 
   font-size: 1em;
-
-  color: #e08020;
+  
   display: inline-block;
 }
 
