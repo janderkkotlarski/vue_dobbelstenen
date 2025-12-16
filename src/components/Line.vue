@@ -4,36 +4,21 @@ import Eye from './Eye.vue';
 const space = ref(' ');
 
 const eyeLines = [
-    [0, 0, 0],
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-    [1, 0, 0],
+    ['', '', ''],
+    ['visible', '', ''],
+    ['', 'visible', ''],
+    ['', '', 'visible'],
+    ['visible', '', 'visible'],
 ];
 
-const eyeLine = ref(eyeLines[0]);
-
-function makeVisible(line) {
-    const visibles = [];
-
-    for (let i = 0; i < line.length; ++i) {
-        visibles.push(line[0] ? 'visible' : '');
-    }
-
-    return visibles;
-}
-
-const visibilityLine = makeVisible(eyeLine);
-
-const eyeOn = document.createElement('Eye');
+const eyeLine = ref(eyeLines[4]);
 </script>
 
 <template>
-    <Eye />
+    <Eye :visibility="eyeLine[0]" />
     {{ space }}
-    <Eye />
+    <Eye :visibility="eyeLine[1]" />
     {{ space }}
-    <Eye />
+    <Eye :visibility="eyeLine[2]" />
     <br />
-    {{ eyeOn }}
 </template>

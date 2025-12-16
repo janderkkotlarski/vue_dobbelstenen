@@ -7,5 +7,5 @@ const show = 'visible';
 </script>
 
 <template>
-    <div :class="visibility"></div>
+    <div class="eye" :class="visibility"></div>
 </template>
