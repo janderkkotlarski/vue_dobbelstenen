@@ -12,6 +12,20 @@ const eyeLines = [
 ];
 
 const eyeLine = ref(eyeLines[0]);
+
+function makeVisible(line) {
+    const visibles = [];
+
+    for (let i = 0; i < line.length; ++i) {
+        visibles.push(line[0] ? 'visible' : '');
+    }
+
+    return visibles;
+}
+
+const visibilityLine = makeVisible(eyeLine);
+
+const eyeOn = document.createElement('Eye');
 </script>
 
 <template>
@@ -21,4 +35,5 @@ const eyeLine = ref(eyeLines[0]);
     {{ space }}
     <Eye />
     <br />
+    {{ eyeOn }}
 </template>
