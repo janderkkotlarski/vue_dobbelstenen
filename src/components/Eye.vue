@@ -1,9 +1,7 @@
 <script setup>
 import {ref} from 'vue';
 
-const props = defineProps(['visibility']);
-
-const show = 'visible';
+const {visibility = ''} = defineProps(['visibility']);
 </script>
 
 <template>

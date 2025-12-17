@@ -26,17 +26,30 @@ a:hover {
   color: #202020;
   border: 1em solid;
   border-radius: 1em;
+  margin: 0.35em;
 
-  font-size: 1em;
+  font-size: 0.7em;
   display: inline-block;
 }
 
 .visible {
   color: #c08020;
-  
-  
-
 }
+
+.dice {
+  color: #c08020;
+  
+  border: 0.7em solid;
+  padding: 0.7em;
+  margin: 0.7em;
+
+  display: inline-block;
+}
+
+.row {
+  display: inline-block;
+}
+
 
 body {
   margin: 0;

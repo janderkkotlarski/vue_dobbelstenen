@@ -3,6 +3,8 @@ import {ref} from 'vue';
 import Eye from './Eye.vue';
 const space = ref(' ');
 
+const {selected = 0} = defineProps(['selected']);
+
 const eyeLines = [
     ['', '', ''],
     ['visible', '', ''],
@@ -11,14 +13,13 @@ const eyeLines = [
     ['visible', '', 'visible'],
 ];
 
-const eyeLine = ref(eyeLines[4]);
+const eyeLine = eyeLines[selected];
 </script>
 
 <template>
-    <Eye :visibility="eyeLine[0]" />
-    {{ space }}
-    <Eye :visibility="eyeLine[1]" />
-    {{ space }}
-    <Eye :visibility="eyeLine[2]" />
-    <br />
+    <div>
+        <Eye :visibility="eyeLine[0]" />
+        <Eye :visibility="eyeLine[1]" />
+        <Eye :visibility="eyeLine[2]" />
+    </div>
 </template>
