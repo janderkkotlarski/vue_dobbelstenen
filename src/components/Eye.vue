@@ -1,6 +1,4 @@
 <script setup>
-import {ref} from 'vue';
-
 const {visibility = ''} = defineProps(['visibility']);
 </script>
 

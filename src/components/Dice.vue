@@ -1,8 +1,8 @@
 <script setup>
-import {ref} from 'vue';
 import Line from './Line.vue';
 
-const {amount = 0} = defineProps(['amount']);
+// const {amount = 0} = defineProps(['amount']);
+const value = defineModel('value');
 
 const diceLines = [
     [0, 0, 0],
@@ -14,7 +14,7 @@ const diceLines = [
     [4, 4, 4],
 ];
 
-const diceLine = diceLines[amount];
+const diceLine = diceLines[value];
 </script>
 
 <template>

@@ -1,7 +1,5 @@
 <script setup>
-import {ref} from 'vue';
 import Eye from './Eye.vue';
-const space = ref(' ');
 
 const {selected = 0} = defineProps(['selected']);
 
