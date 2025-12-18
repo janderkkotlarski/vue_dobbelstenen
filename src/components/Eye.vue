@@ -1,6 +1,4 @@
 <script setup>
-// const {visibility = ''} = defineProps(['visibility']);
-
 const visibility = defineModel('visibility');
 </script>
 

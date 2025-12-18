@@ -1,7 +1,5 @@
 <script setup>
 import Line from './Line.vue';
-
-// const {amount = 0} = defineProps(['amount']);
 const value = defineModel('value');
 
 const diceLines = [
@@ -13,14 +11,12 @@ const diceLines = [
     [4, 2, 4],
     [4, 4, 4],
 ];
-
-const diceLine = diceLines[value];
 </script>
 
 <template>
     <div class="dice">
-        <Line :selected="diceLine[0]" />
-        <Line :selected="diceLine[1]" />
-        <Line :selected="diceLine[2]" />
+        <Line :selected="diceLines[value][0]" />
+        <Line :selected="diceLines[value][1]" />
+        <Line :selected="diceLines[value][2]" />
     </div>
 </template>
