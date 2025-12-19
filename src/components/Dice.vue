@@ -1,5 +1,6 @@
 <script setup>
 import Line from './Line.vue';
+
 const value = defineModel('value');
 
 const diceLines = [
@@ -15,8 +16,6 @@ const diceLines = [
 
 <template>
     <div class="dice">
-        <Line :selected="diceLines[value][0]" />
-        <Line :selected="diceLines[value][1]" />
-        <Line :selected="diceLines[value][2]" />
+        <Line v-for="i in 3" :selected="diceLines[value][i - 1]" />
     </div>
 </template>

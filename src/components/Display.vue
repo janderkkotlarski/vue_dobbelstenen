@@ -1,34 +1,39 @@
 <script setup>
-import {ref, reactive} from 'vue';
+import {ref} from 'vue';
 import Dice from './Dice.vue';
 
-let roll = () => Math.floor(6 * Math.random()) + 1;
+const diceAmount = 8;
 
-let rolling = amount => {
-    let diceValues = [];
+const roll = () => Math.floor(6 * Math.random()) + 1;
 
-    for (let i = 0; i < amount; ++i) {
-        diceValues.push(roll());
+const rolling = () => {
+    let values = [];
+
+    for (let i = 0; i < diceAmount; ++i) {
+        values.push(roll());
     }
 
-    return diceValues;
+    return values;
 };
 
-let state = reactive({values: []});
+const diceValues = ref(rolling());
 
-const reroll = () => {
-    state.values = rolling(7);
+const reroll = index => {
+    // With ref, the value is the array on to which to apply the index.
+    diceValues.value[index] = roll();
 };
 
-const sharedValue = ref(0);
-
-// reroll();
+const rerolling = () => {
+    for (let index = 0; index < diceAmount; ++index) {
+        reroll(index);
+    }
+};
 </script>
 
 <template>
-    <div class="row" v-for="value in state.values">
-        <Dice v-model:value="sharedValue" />
+    <div class="row">
+        <Dice @click="reroll(index - 1)" v-for="index in diceAmount" v-model:value="diceValues[index - 1]" />
     </div>
 
-    <button @click="reroll">Herwerpen</button>
+    <button @click="rerolling">Opnieuw rollen?</button>
 </template>

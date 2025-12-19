@@ -1,9 +1,7 @@
 <script setup>
-import {ref} from 'vue';
 import Eye from './Eye.vue';
 
-// const {selected = 0} = defineProps(['selected']);
-
+// No fussing with extraneous ref variables, those break the simple functioning
 const selected = defineModel('selected', {type: Number, default: 4});
 
 const eyeLines = [
@@ -13,26 +11,10 @@ const eyeLines = [
     ['invis', 'invis', 'visible'],
     ['visible', 'invis', 'visible'],
 ];
-
-/*
-const updateLine = () => {
-    // eyeLine.value = eyeLines[select.value];
-};
-
-updateLine();
-*/
-
-// const eyeLine = eyeLines[selected];
-
-/*
-
-    */
 </script>
 
 <template>
     <div>
-        <Eye :visibility="eyeLines[selected][0]" />
-        <Eye :visibility="eyeLines[selected][1]" />
-        <Eye :visibility="eyeLines[selected][2]" />
+        <Eye v-for="i in 3" :visibility="eyeLines[selected][i - 1]" />
     </div>
 </template>

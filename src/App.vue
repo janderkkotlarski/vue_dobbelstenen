@@ -5,29 +5,8 @@ import Eye from './components/Eye.vue';
 import Line from './components/Line.vue';
 import Dice from './components/Dice.vue';
 
-const visibilityFeedback = ref('visible');
-
-const selectedMax = 4;
-const selectedFeedback = ref(0);
-
 const valueMax = 6;
 const valueFeedback = ref(0);
-
-const flipper = () => {
-    if (visibilityFeedback.value === 'visible') {
-        visibilityFeedback.value = 'invis';
-    } else {
-        visibilityFeedback.value = 'visible';
-    }
-};
-
-const switcher = () => {
-    if (selectedFeedback.value < selectedMax) {
-        ++selectedFeedback.value;
-    } else {
-        selectedFeedback.value = 0;
-    }
-};
 
 const changer = () => {
     if (valueFeedback.value < valueMax) {
@@ -38,14 +17,13 @@ const changer = () => {
 };
 
 /*
-<Display />
 
-<Eye @click="flipper" v-model:visibility="visibilityFeedback" />
+<Dice @click="changer" v-model:value="valueFeedback" />
 
-<Line @click="switcher" v-model:selected="selectedFeedback" />
+<Dice @click="changer" v-model:value="valueFeedback" />
 */
 </script>
 
 <template>
-    <Dice @click="changer" v-model:value="valueFeedback" />
+    <Display />
 </template>
