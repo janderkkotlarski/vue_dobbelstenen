@@ -6,6 +6,8 @@ const valueMax = 6;
 
 const diceAmount = 8;
 
+const valueCounts = ref([]);
+
 const roll = () => Math.floor(valueMax * Math.random()) + 1;
 
 const rolling = () => {
@@ -23,6 +25,9 @@ const diceValues = ref(rolling());
 const reroll = index => {
     // With ref, the value is the array on to which to apply the index.
     diceValues.value[index] = roll();
+
+    // Recalculate dice value counts
+    valueCounting();
 };
 
 const rerolling = () => {
@@ -31,21 +36,10 @@ const rerolling = () => {
     }
 };
 
-const valueCountInit = () => {
-    let counts = [];
-
-    for (let i = 0; i < valueMax; ++i) {
-        counts.push({diceValue: i + 1, rollCount: 0});
-    }
-
-    return counts;
-};
-
-// const valueCounts = ref(valueCountInit());
-
-const valueRecount = () => {
-    let counts = [];
-
+const valueCounting = () => {
+    // .value is the key to correct ref usage
+    // This works like a charm, even for empty arrays
+    // Just start at index 0
     for (let i = 0; i < valueMax; ++i) {
         let count = 0;
 
@@ -55,13 +49,11 @@ const valueRecount = () => {
             }
         }
 
-        counts.push({diceValue: i + 1, rollCount: count});
+        valueCounts.value[i] = {diceValue: i + 1, rollCount: count};
     }
-
-    return counts;
 };
 
-const valueCounts = ref(valueRecount());
+valueCounting();
 </script>
 
 <template>
@@ -70,6 +62,7 @@ const valueCounts = ref(valueRecount());
     </div>
     <br />
     <button @click="rerolling">Opnieuw rollen?</button>
+    <br />
     <br />
     <table>
         <tr>
