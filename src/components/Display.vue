@@ -14,11 +14,15 @@ const roll = () => Math.floor(valueMax * Math.random()) + 1;
 
 const diceRoll = index => {
     // With ref, the value is the array on to which to apply the index.
-    diceValues.value[index] = roll();
+    //diceValues.value[index] = roll();
+
+    /// Something something index, length and id: index + 1
+    diceValues.value[index] = {diceRoll: roll()};
 };
 
 const rolling = () => {
     for (let i = 0; i < diceAmount; ++i) {
+        diceValues.value[i] = {diceIndex: i + 1};
         diceRoll(i);
     }
 
