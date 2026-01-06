@@ -6,25 +6,27 @@ const valueMax = 6;
 
 const diceAmount = 8;
 
+const diceValues = ref([]);
+
 const valueCounts = ref([]);
 
 const roll = () => Math.floor(valueMax * Math.random()) + 1;
 
-const rolling = () => {
-    let values = [];
-
-    for (let i = 0; i < diceAmount; ++i) {
-        values.push(roll());
-    }
-
-    return values;
-};
-
-const diceValues = ref(rolling());
-
-const reroll = index => {
+const diceRoll = index => {
     // With ref, the value is the array on to which to apply the index.
     diceValues.value[index] = roll();
+};
+
+const rolling = () => {
+    for (let i = 0; i < diceAmount; ++i) {
+        diceRoll(i);
+    }
+
+    valueCounting();
+};
+
+const reroll = index => {
+    diceRoll(index);
 
     // Recalculate dice value counts
     valueCounting();
@@ -53,7 +55,7 @@ const valueCounting = () => {
     }
 };
 
-valueCounting();
+rolling();
 </script>
 
 <template>
