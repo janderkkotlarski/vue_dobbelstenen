@@ -1,31 +1,36 @@
 <script setup>
-import {ref} from 'vue';
+import {reactive} from 'vue';
 import Dice from './Dice.vue';
 
+// Simple constants
 const valueMax = 6;
-
 const diceAmount = 8;
 
-let clicked = 0;
+// reactive() for arrays and simpler handling
+const diceValues = reactive([]);
+const valueCounts = reactive([]);
 
-const diceValues = ref([]);
-
-const valueCounts = ref([]);
-
-const roll = () => Math.floor(valueMax * Math.random()) + 1;
-
-const diceRoll = index => {
-    // With ref, the value is the array on to which to apply the index.
-
-    if (index === diceValues.value.length) {
-        diceValues.value[index] = {diceIndex: index + 1, diceRoll: roll()};
+// reactive() objects can just be passed along like variables
+const reactArrayIndex = (reactName, index, amount) => {
+    // Check whether generating or changing array contents
+    if (index === reactName.length) {
+        // Generate new array contents
+        reactName.push({id: index + 1, entry: amount});
     } else {
-        diceValues.value[index].diceRoll = roll();
-
-        ++clicked;
+        // Change specific array content
+        reactName[index].entry = amount;
     }
 };
 
+// Simple dice roll function
+const roll = () => Math.floor(valueMax * Math.random()) + 1;
+
+// Roll a specific die
+const diceRoll = index => {
+    reactArrayIndex(diceValues, index, roll());
+};
+
+// Roll all dice, then update results
 const rolling = () => {
     for (let i = 0; i < diceAmount; ++i) {
         diceRoll(i);
@@ -37,34 +42,22 @@ const rolling = () => {
 const reroll = index => {
     diceRoll(index);
 
-    // Recalculate dice value counts
+    // Update new result
     valueCounting();
 };
 
-const rerolling = () => {
-    for (let index = 0; index < diceAmount; ++index) {
-        reroll(index);
-    }
-};
-
+// For each result count the number of dice showing that result
 const valueCounting = () => {
-    // .value is the key to correct ref usage
-    // This works like a charm, even for empty arrays
-    // Just start at index 0
-    for (let i = 0; i < valueMax; ++i) {
+    for (let index = 0; index < valueMax; ++index) {
         let count = 0;
 
-        for (let j = 0; j < diceAmount; ++j) {
-            if (diceValues.value[j].diceRoll === i + 1) {
+        for (let jndex = 0; jndex < diceAmount; ++jndex) {
+            if (diceValues[jndex].entry === index + 1) {
                 ++count;
             }
         }
 
-        if (i === valueCounts.value.length) {
-            valueCounts.value[i] = {diceValue: i + 1, rollCount: count};
-        } else {
-            valueCounts.value[i].rollCount = count;
-        }
+        reactArrayIndex(valueCounts, index, count);
     }
 };
 
@@ -73,22 +66,22 @@ rolling();
 
 <template>
     <div>
-        <Dice @click="reroll(value.diceIndex - 1)" v-for="value in diceValues" v-model:value="value.diceRoll" />
+        <Dice @click="reroll(value.id - 1)" v-for="value in diceValues" :key="value.id" v-model:value="value.entry" />
     </div>
 
     <br />
-    <button @click="rerolling">Opnieuw rollen?</button>
+    <button @click="rolling">Opnieuw rollen?</button>
     <br />
-    <div>{{ clicked }}</div>
+
     <br />
     <table>
         <tr>
             <th>Waarde</th>
             <th>Hoeveelheid</th>
         </tr>
-        <tr v-for="value in valueCounts">
-            <td>{{ value.diceValue }}</td>
-            <td>{{ value.rollCount }}</td>
+        <tr v-for="value in valueCounts" :key="value.id">
+            <td>{{ value.id }}</td>
+            <td>{{ value.entry }}</td>
         </tr>
     </table>
 </template>
