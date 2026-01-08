@@ -6,6 +6,8 @@ const valueMax = 6;
 
 const diceAmount = 8;
 
+let clicked = 0;
+
 const diceValues = ref([]);
 
 const valueCounts = ref([]);
@@ -14,15 +16,18 @@ const roll = () => Math.floor(valueMax * Math.random()) + 1;
 
 const diceRoll = index => {
     // With ref, the value is the array on to which to apply the index.
-    //diceValues.value[index] = roll();
 
-    /// Something something index, length and id: index + 1
-    diceValues.value[index] = {diceRoll: roll()};
+    if (index === diceValues.value.length) {
+        diceValues.value[index] = {diceIndex: index + 1, diceRoll: roll()};
+    } else {
+        diceValues.value[index].diceRoll = roll();
+
+        ++clicked;
+    }
 };
 
 const rolling = () => {
     for (let i = 0; i < diceAmount; ++i) {
-        diceValues.value[i] = {diceIndex: i + 1};
         diceRoll(i);
     }
 
@@ -50,12 +55,16 @@ const valueCounting = () => {
         let count = 0;
 
         for (let j = 0; j < diceAmount; ++j) {
-            if (diceValues.value[j] === i + 1) {
+            if (diceValues.value[j].diceRoll === i + 1) {
                 ++count;
             }
         }
 
-        valueCounts.value[i] = {diceValue: i + 1, rollCount: count};
+        if (i === valueCounts.value.length) {
+            valueCounts.value[i] = {diceValue: i + 1, rollCount: count};
+        } else {
+            valueCounts.value[i].rollCount = count;
+        }
     }
 };
 
@@ -64,11 +73,13 @@ rolling();
 
 <template>
     <div>
-        <Dice @click="reroll(index - 1)" v-for="index in diceAmount" v-model:value="diceValues[index - 1]" />
+        <Dice @click="reroll(value.diceIndex - 1)" v-for="value in diceValues" v-model:value="value.diceRoll" />
     </div>
+
     <br />
     <button @click="rerolling">Opnieuw rollen?</button>
     <br />
+    <div>{{ clicked }}</div>
     <br />
     <table>
         <tr>
