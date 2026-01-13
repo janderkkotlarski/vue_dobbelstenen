@@ -1,8 +1,8 @@
 <script setup>
 import Eye from './Eye.vue';
 
-// No fussing with extraneous ref variables, those break the simple functioning
-const selected = defineModel('selected', {type: Number, default: 4});
+// Default is for empty line
+const selected = defineModel('selected', {type: Number, default: 0});
 
 const eyeLines = [
     ['invis', 'invis', 'invis'],

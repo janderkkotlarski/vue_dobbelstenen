@@ -16,6 +16,7 @@ const reactArrayIndex = (reactName, index, amount) => {
     if (index === reactName.length) {
         // Generate new array contents
         reactName.push({id: index + 1, entry: amount});
+        // reactName.push({id: index + 1, entry: 0});
     } else {
         // Change specific array content
         reactName[index].entry = amount;
@@ -25,48 +26,58 @@ const reactArrayIndex = (reactName, index, amount) => {
 // Simple dice roll function
 const roll = () => Math.floor(valueMax * Math.random()) + 1;
 
-// Roll a specific die
-const diceRoll = index => {
-    reactArrayIndex(diceValues, index, roll());
-};
-
 // Roll all dice, then update results
 const rolling = () => {
-    for (let i = 0; i < diceAmount; ++i) {
-        diceRoll(i);
+    for (let index = 0; index < diceAmount; ++index) {
+        reactArrayIndex(diceValues, index, roll());
     }
 
     valueCounting();
 };
 
-const reroll = index => {
-    diceRoll(index);
-
-    // Update new result
-    valueCounting();
-};
-
 // For each result count the number of dice showing that result
 const valueCounting = () => {
+    // For each value...
     for (let index = 0; index < valueMax; ++index) {
         let count = 0;
 
+        //...count the number of dice displaying that value
         for (let jndex = 0; jndex < diceAmount; ++jndex) {
             if (diceValues[jndex].entry === index + 1) {
                 ++count;
             }
         }
 
+        // Put that number in the correct place
         reactArrayIndex(valueCounts, index, count);
     }
 };
 
+// Roll the dice
 rolling();
+
+/*
+/// Test for clicking specific dice to reroll
+
+// Roll a specific die
+const diceRoll = index => {
+    reactArrayIndex(diceValues, index, roll());
+};
+
+// Reroll a specific die, then update results
+const reroll = index => {
+    diceRoll(index);
+
+    valueCounting();
+};
+
+@click="reroll(value.id - 1)"
+*/
 </script>
 
 <template>
     <div>
-        <Dice @click="reroll(value.id - 1)" v-for="value in diceValues" :key="value.id" v-model:value="value.entry" />
+        <Dice v-for="value in diceValues" :key="value.id" v-model:value="value.entry" />
     </div>
 
     <br />
@@ -75,13 +86,17 @@ rolling();
 
     <br />
     <table>
-        <tr>
-            <th>Waarde</th>
-            <th>Hoeveelheid</th>
-        </tr>
-        <tr v-for="value in valueCounts" :key="value.id">
-            <td>{{ value.id }}</td>
-            <td>{{ value.entry }}</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Waarde</th>
+                <th>Hoeveelheid</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="value in valueCounts" :key="value.id">
+                <td>{{ value.id }}</td>
+                <td>{{ value.entry }}</td>
+            </tr>
+        </tbody>
     </table>
 </template>
