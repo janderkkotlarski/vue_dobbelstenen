@@ -53,6 +53,18 @@ const valueCounting = () => {
     }
 };
 
+// Roll a specific die
+const diceRoll = index => {
+    reactArrayIndex(diceValues, index, roll());
+};
+
+// Reroll a specific die, then update results
+const reroll = index => {
+    diceRoll(index);
+
+    valueCounting();
+};
+
 // Roll the dice
 rolling();
 
@@ -77,7 +89,7 @@ const reroll = index => {
 
 <template>
     <div>
-        <Dice v-for="value in diceValues" :key="value.id" v-model:value="value.entry" />
+        <Dice @click="reroll(value.id - 1)" v-for="value in diceValues" :key="value.id" v-model:value="value.entry" />
     </div>
 
     <br />
